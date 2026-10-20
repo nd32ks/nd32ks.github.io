@@ -17,6 +17,8 @@ const shapes: Record<string, { pts: [number, number][]; labels: Record<number, [
         labels: { 1: ['Forecasting', '需求预测'], 3: ['Real-time pipeline', '实时数据管道'], 5: ['Dashboards', '数据看板'] } },
   jv: { pts: [[120, 470], [280, 360], [430, 430], [570, 260], [730, 330]],
         labels: { 1: ['Camera-trap data', '红外相机数据'], 3: ['Early warning', '预警信号'], 4: ['Team project', '团队项目'] } },
+  ml: { pts: [[90, 380], [230, 250], [370, 330], [500, 200], [600, 300], [680, 160]],
+        labels: { 1: ['PDF parsing', 'PDF 解析'], 3: ['Math reconstruction', '公式还原'], 4: ['Human review', '人工审核'], 5: ['Question scripting', '题目脚本化'] } },
   pp: { pts: [[140, 310], [300, 190], [460, 270], [600, 430], [750, 310]],
         labels: { 1: ['Chatbot', '聊天机器人'], 3: ['Cross-functional team', '跨职能团队'] } },
 };
@@ -70,7 +72,7 @@ const stops = c.stops.slice(0, 4);
   </section>
 
   <!-- Constellation stage: pinned while the four projects form, one after another -->
-  <section id="work" class="stage-wrap" data-stage-wrap aria-label={c.workH}>
+  <section id="work" class="stage-wrap" data-stage-wrap aria-label={c.workH} style={`--n:${projects.length}`}>
     <div class="stage" data-stage>
       <ol class="rail" aria-label={c.workH}>
         {projects.map((p, i) => (
@@ -109,7 +111,7 @@ const stops = c.stops.slice(0, 4);
           </div>
         ))}
       </div>
-      <p class="stage-count" aria-hidden="true"><span data-count>01</span> / 04</p>
+      <p class="stage-count" aria-hidden="true"><span data-count>01</span> / {String(projects.length).padStart(2, '0')}</p>
     </div>
   </section>
 

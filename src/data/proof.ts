@@ -3,7 +3,7 @@
 
 export type SkillId =
   | 'sql' | 'funnel' | 'dash' | 'anomaly' | 'rca' | 'classify' | 'evaluate'
-  | 'experiment' | 'stats' | 'writing' | 'llm' | 'forecast' | 'fullstack';
+  | 'experiment' | 'stats' | 'writing' | 'llm' | 'forecast' | 'fullstack' | 'extract';
 
 export const skills: { id: SkillId; en: string; zh: string }[] = [
   { id: 'sql', en: 'SQL', zh: 'SQL' },
@@ -17,6 +17,7 @@ export const skills: { id: SkillId; en: string; zh: string }[] = [
   { id: 'stats', en: 'Statistical inference', zh: '统计推断' },
   { id: 'forecast', en: 'Forecasting', zh: '需求预测' },
   { id: 'llm', en: 'LLM pipelines', zh: 'LLM 数据管道' },
+  { id: 'extract', en: 'Data extraction', zh: '数据抽取' },
   { id: 'fullstack', en: 'Full-stack apps', zh: '全栈应用' },
   { id: 'writing', en: 'Technical write-ups', zh: '技术写作' },
 ];
@@ -70,6 +71,7 @@ export const proofProjects: ProofProject[] = [
 
 // Shipped work that already proves skills (anchors into the Work section).
 export const shippedProof: { href: string; title: string; skills: SkillId[] }[] = [
-  { href: '#p-pb', title: 'ProfessorBook', skills: ['llm', 'fullstack', 'writing'] },
+  { href: '#p-pb', title: 'ProfessorBook', skills: ['llm', 'extract', 'fullstack', 'writing'] },
+  { href: '#p-ml', title: 'Mathleagues', skills: ['extract', 'fullstack'] },
   { href: '#p-fn', title: 'FreshNext', skills: ['forecast', 'dash', 'fullstack'] },
 ];

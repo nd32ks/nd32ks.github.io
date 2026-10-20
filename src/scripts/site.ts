@@ -155,8 +155,9 @@ const consts = [...document.querySelectorAll<HTMLElement>('[data-const]')];
 const countEl = document.querySelector('[data-count]');
 let current = -1;
 function setStage(q: number) {
-  const k = Math.min(3, Math.floor(q * 4));
-  const l = q * 4 - k;
+  const N = panels.length || 4;
+  const k = Math.min(N - 1, Math.floor(q * N));
+  const l = q * N - k;
   const draw = clamp(l / 0.6);
   if (k !== current) {
     current = k;
@@ -179,7 +180,7 @@ function setStage(q: number) {
 }
 const stageTop = () => (stageWrap ? stageWrap.getBoundingClientRect().top + window.scrollY : 0);
 const stageSpan = () => (stageWrap ? stageWrap.offsetHeight - window.innerHeight : 1);
-function jumpTo(i: number) { scrollToY(stageTop() + ((i + 0.62) / 4) * stageSpan()); }
+function jumpTo(i: number) { scrollToY(stageTop() + ((i + 0.62) / (panels.length || 4)) * stageSpan()); }
 if (stageWrap) {
   setStage(0);
   ScrollTrigger.create({ trigger: stageWrap, start: 'top top', end: 'bottom bottom', onUpdate: (self) => setStage(Math.min(0.9999, self.progress)) });

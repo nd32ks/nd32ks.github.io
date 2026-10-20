@@ -10,3 +10,4 @@ PLAN.md
 .impeccable/mocks/
 .claude/skills/impeccable/scripts/bin/
 .claude/settings.local.json
+private/

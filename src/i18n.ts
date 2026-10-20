@@ -103,6 +103,9 @@ const en = {
     { id: 'pp', title: 'PPIT applicant chatbot', label: 'Chatbot', meta: 'PPIT Asian Scholars International Conference',
       desc: 'With a cross-functional student team, designed and built a chatbot that answers common applicant questions, making support faster to reach.',
       tech: ['Chatbot', 'Team project'] },
+    { id: 'ml', title: 'Mathleagues', label: 'Contributor', meta: 'Contributor, Mathleagues',
+      desc: 'Mathleagues is a competitive math problem-solving platform with Elo rankings and exam-style grading. I applied my data-extraction skills to build a system that scripts every question out of past-paper PDFs, with a review app so nothing is published unchecked.',
+      tech: ['TypeScript', 'PDF parsing', 'Next.js', 'Human-in-the-loop'], stat: '14', statLabel: 'A-level papers extracted' },
   ] as Project[],
   bodiacLabel: 'Robotics intern',
 };
@@ -195,6 +198,9 @@ const zh: typeof en = {
     { id: 'pp', title: 'PPIT 申请者助手', label: '聊天机器人', meta: 'PPIT 亚洲学者国际会议 技术部',
       desc: '与跨职能学生团队一起设计并开发聊天机器人，解答申请者的常见问题，让支持更快、更易获得。',
       tech: ['聊天机器人', '团队项目'] },
+    { id: 'ml', title: 'Mathleagues', label: '贡献者', meta: 'Mathleagues 贡献者',
+      desc: 'Mathleagues 是一个带 Elo 排名和考试式评分的数学竞技平台。我运用数据抽取技能，搭建了一个把往年试卷 PDF 中的每道题自动编写成题目的系统，并配有审核应用，确保未经检查不会发布。',
+      tech: ['TypeScript', 'PDF 解析', 'Next.js', '人工审核'], stat: '14', statLabel: '套 A-level 试卷已抽取' },
   ],
   bodiacLabel: '机器人实习',
 };

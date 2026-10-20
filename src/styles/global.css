@@ -138,7 +138,7 @@ main, .footer { position: relative; z-index: 1; }
 
 /* Constellation stage */
 .stage-wrap { position: relative; }
-.js .stage-wrap { height: calc(100svh + 4 * 85svh); }
+.js .stage-wrap { height: calc(100svh + var(--n, 4) * 85svh); }
 .stage { position: relative; height: 100svh; display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: clamp(40px, 5vw, 96px); padding: 140px var(--pad-x) 64px; max-width: var(--max); margin: 0 auto; }
 .js .stage { position: sticky; top: 0; }
 .rail { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; gap: 2px; margin-bottom: 28px; }
