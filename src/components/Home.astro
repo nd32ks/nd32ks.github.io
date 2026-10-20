@@ -1,199 +1,142 @@
 ---
 import Icon from './Icon.astro';
 import Proof from './Proof.astro';
-import { dict, clusters, EMAIL, GITHUB, type Lang } from '../i18n';
+import { dict, EMAIL, GITHUB, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const zh = lang === 'zh';
 const c = dict[lang];
-const byId = Object.fromEntries(c.projects.map((p) => [p.id, p]));
-const labelFor = (id: string) => (id === 'bd' ? { title: 'Bodiac Robotics', sub: c.bodiacLabel } : { title: byId[id].title, sub: byId[id].label });
-const [flag, ...rest] = c.projects;
 const cvHref = `mailto:${EMAIL}?subject=${encodeURIComponent(c.cvSubject)}`;
-const mapData = JSON.stringify(clusters.map((k) => ({ id: k.id, d: k.d, m: k.m, n: k.n })));
-const tools = c.skills.flatMap((g) => g.items);
-const half = Math.ceil(tools.length / 2);
-const bands = [tools.slice(0, half), tools.slice(half)];
+
+// Each project is a constellation. Labelled stars are the skills it proves.
+const shapes: Record<string, { pts: [number, number][]; labels: Record<number, [string, string]> }> = {
+  pb: { pts: [[80, 420], [220, 300], [380, 350], [520, 180], [660, 250], [760, 90]],
+        labels: { 1: ['LLM extraction', 'LLM 结构化抽取'], 3: ['Recommendation', '推荐系统'], 4: ['Next.js 16', 'Next.js 16'], 5: ['Firebase', 'Firebase'] } },
+  fn: { pts: [[100, 200], [260, 270], [400, 160], [540, 310], [700, 260], [620, 470]],
+        labels: { 1: ['Forecasting', '需求预测'], 3: ['Real-time pipeline', '实时数据管道'], 5: ['Dashboards', '数据看板'] } },
+  jv: { pts: [[120, 470], [280, 360], [430, 430], [570, 260], [730, 330]],
+        labels: { 1: ['Camera-trap data', '红外相机数据'], 3: ['Early warning', '预警信号'], 4: ['Team project', '团队项目'] } },
+  pp: { pts: [[140, 310], [300, 190], [460, 270], [600, 430], [750, 310]],
+        labels: { 1: ['Chatbot', '聊天机器人'], 3: ['Cross-functional team', '跨职能团队'] } },
+};
+const projects = c.projects.map((p) => ({ ...p, shape: shapes[p.id] }));
+const nav = [
+  { href: '#work', label: zh ? '作品' : 'Work' },
+  { href: '#proof', label: zh ? '技能' : 'Skills' },
+  { href: '#about', label: zh ? '关于' : 'About' },
+  { href: '#contact', label: zh ? '联系' : 'Contact' },
+];
+const t = {
+  pitch: zh ? '西交利物浦大学数据科学与人工智能专业。下面每个项目都是一个星座，每颗亮星都是它所证明的技能。'
+            : 'Data science and AI at XJTLU. Every project below is a constellation, and every bright star is a skill it proves.',
+  proves: zh ? '这个项目证明的技能' : 'Skills this proves',
+  email: zh ? '给我发邮件' : 'Email Andrew',
+  study: zh ? '学习' : 'Study',
+  work: zh ? '工作' : 'Work',
+};
+const stops = c.stops.slice(0, 4);
 ---
-<div class="grain" aria-hidden="true"></div>
+<canvas class="sky" data-sky aria-hidden="true"></canvas>
 
 <div class="nav-wrap">
-  <header class="nav" data-nav>
+  <header class="nav">
     <a class="brand" href="#top">{c.short}<span>.</span></a>
     <nav class="nav-links" aria-label="Primary">
-      {c.nav.map((n) => <a href={n.href} data-navlink>{n.label}</a>)}
+      {nav.map((n) => <a href={n.href} data-navlink>{n.label}</a>)}
     </nav>
     <div class="nav-tools">
       <div class="lang" role="group" aria-label={c.langLabel}>
         <a href="/" hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
-        <a href="/zh/" hreflang="zh-CN" lang="zh-CN" aria-current={lang === 'zh' ? 'true' : undefined}>中文</a>
+        <a href="/zh/" hreflang="zh-CN" lang="zh-CN" aria-current={zh ? 'true' : undefined}>中文</a>
       </div>
       <button class="round" type="button" data-theme-toggle data-to-light={c.themeToLight} data-to-dark={c.themeToDark} aria-label={c.themeToLight}>
         <Icon name="sun" class="i-sun" /><Icon name="moon" class="i-moon" />
       </button>
-      <button class="round menu-btn" type="button" data-menu-btn aria-expanded="false" aria-controls="menu" data-open={c.menuOpen} data-close={c.menuClose} aria-label={c.menuOpen}>
-        <span class="burger" aria-hidden="true"><span></span><span></span></span>
-      </button>
     </div>
   </header>
-  <div class="progress" aria-hidden="true"><span data-progress></span></div>
-</div>
-
-<div class="menu" id="menu" data-menu hidden>
-  <nav aria-label="Primary">
-    {c.nav.map((n, i) => <a href={n.href} style={`--i:${i}`} data-menu-link>{n.label}</a>)}
-  </nav>
 </div>
 
 <main id="main">
-  <!-- Hero: descend from orbit. The wrapper gives the sticky stage room to scrub. -->
-  <div class="hero-pin" data-hero-pin>
-    <section id="top" class="hero" data-hero>
-      <div class="map" data-map={mapData} aria-label={c.mapAlt} role="img">
-        <canvas class="stars" data-stars aria-hidden="true"></canvas>
-        <div class="limb" data-limb aria-hidden="true"></div>
-        <div class="earth" data-earth>
-          <div class="grat" data-grat aria-hidden="true"></div>
-          <canvas class="map-canvas" data-map-canvas aria-hidden="true"></canvas>
-        </div>
-        {clusters.map((k) => {
-          const l = labelFor(k.id);
-          return (
-            <a class:list={['pin', { 'pin-left': k.d[0] > 74, 'pin-left-m': k.m[0] > 60 }]} href={k.href} data-pin={k.id}
-               style={`--x:${k.d[0]}%;--y:${k.d[1]}%;--mx:${k.m[0]}%;--my:${k.m[1]}%`}>
-              <span class="pin-ring" aria-hidden="true"></span>
-              <span class="pin-label"><strong>{l.title}</strong><small>{l.sub}</small></span>
-            </a>
-          );
-        })}
-        <div class="readout" aria-hidden="true">
-          <span>31.30°N 120.58°E</span>
-          <span>{c.place}</span>
-          <span class="alt">{c.alt} <b data-alt>705</b> km</span>
-        </div>
-        <p class="hint" data-hint>{c.hint}</p>
-        <div class="scrim" aria-hidden="true"></div>
+  <section id="top" class="hero" data-hero>
+    <div class="hero-copy" data-hero-copy>
+      <h1 class="rise"><span>{c.h1a}</span><em>{c.h1b}</em></h1>
+      <p class="pitch rise">{t.pitch}</p>
+      <div class="ctas rise">
+        <a class="btn btn-primary" href="#work" data-magnetic>{c.ctaWork}<span class="btn-ico"><Icon name="arrowDown" size={16} /></span></a>
+        <a class="btn btn-ghost" href={cvHref} data-magnetic>{c.ctaCv}<span class="btn-ico"><Icon name="envelope" size={16} /></span></a>
       </div>
-      <div class="hero-copy" data-hero-copy>
-        <h1 class="reveal-hero"><span>{c.h1a}</span><em>{c.h1b}</em></h1>
-        <p class="pitch reveal-hero">{c.pitch}</p>
-        <div class="ctas reveal-hero">
-          <a class="btn btn-primary" href="#work" data-magnetic>{c.ctaWork}<span class="btn-ico"><Icon name="arrowDown" size={16} /></span></a>
-          <a class="btn btn-ghost" href={cvHref} data-magnetic>{c.ctaCv}<span class="btn-ico"><Icon name="envelope" size={16} /></span></a>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- Work: pinned horizontal pass over each lit region (desktop); vertical stack on small screens -->
-  <section id="work" class="work" data-work>
-    <div class="work-head">
-      <h2 data-split>{c.workH}</h2>
-      <p data-reveal>{c.workSub}</p>
     </div>
-    <div class="work-viewport">
-      <div class="work-track" data-track>
-        <article id={`p-${flag.id}`} class="bezel plate plate-flag">
-          <div class="bezel-core">
-            <div class="plate-map plate-map-flag">
-              <div class="grat" aria-hidden="true"></div>
-              <canvas data-plate={flag.id} data-parallax-x aria-hidden="true"></canvas>
-            </div>
-            <div class="plate-body">
-              <p class="meta">{flag.meta}</p>
-              <h3>{flag.title}</h3>
-              <p>{flag.desc}</p>
-              <ul class="chips">{flag.tech.map((x) => <li>{x}</li>)}</ul>
-            </div>
-          </div>
-        </article>
-        {rest.map((p) => (
-          <article id={`p-${p.id}`} class="bezel plate">
-            <div class="bezel-core">
-              <div class="plate-map">
-                <div class="grat" aria-hidden="true"></div>
-                <canvas data-plate={p.id} data-parallax-x aria-hidden="true"></canvas>
-                {p.stat && <div class="stat" data-parallax-stat><strong data-count={p.stat}>{p.stat}</strong><span>{p.statLabel}</span></div>}
-              </div>
-              <div class="plate-body">
-                <p class="meta">{p.meta}</p>
-                <h3>{p.title}</h3>
-                <p>{p.desc}</p>
-                <ul class="chips chips-sm">{p.tech.map((x) => <li>{x}</li>)}</ul>
-              </div>
-            </div>
+  </section>
+
+  <!-- Constellation stage: pinned while the four projects form, one after another -->
+  <section id="work" class="stage-wrap" data-stage-wrap aria-label={c.workH}>
+    <div class="stage" data-stage>
+      <ol class="rail" aria-label={c.workH}>
+        {projects.map((p, i) => (
+          <li data-rail={i}><a href={`#p-${p.id}`} data-jump={i}><span class="rail-bar"><span></span></span><span class="rail-t">{p.title}</span></a></li>
+        ))}
+      </ol>
+
+      <div class="panels">
+        {projects.map((p, i) => (
+          <article id={`p-${p.id}`} class="panel" data-panel={i}>
+            <p class="meta">{p.meta}</p>
+            <h2>{p.title}</h2>
+            <p class="desc">{p.desc}</p>
+            <p class="proves">{t.proves}</p>
+            <ul class="chips">
+              {Object.entries(p.shape.labels).map(([k, l]) => <li data-skill-star={k}>{zh ? l[1] : l[0]}</li>)}
+            </ul>
           </article>
         ))}
       </div>
+
+      <div class="sky-box" aria-hidden="true">
+        {projects.map((p, i) => (
+          <div class="const" data-const={i}>
+            <svg viewBox="0 0 820 560" preserveAspectRatio="xMidYMid meet">
+              {p.shape.pts.slice(1).map((pt, j) => (
+                <line x1={p.shape.pts[j][0]} y1={p.shape.pts[j][1]} x2={pt[0]} y2={pt[1]} pathLength="1" data-seg={j} />
+              ))}
+              {p.shape.pts.map((pt, j) => (
+                <circle cx={pt[0]} cy={pt[1]} r={p.shape.labels[j] ? 7 : 3.5} class:list={{ big: !!p.shape.labels[j] }} data-star={j} />
+              ))}
+            </svg>
+            {p.shape.pts.map((pt, j) => p.shape.labels[j] && (
+              <span class="star-label" data-label={j} style={`left:${(pt[0] / 820) * 100}%;top:${(pt[1] / 560) * 100}%`}>{zh ? p.shape.labels[j][1] : p.shape.labels[j][0]}</span>
+            ))}
+          </div>
+        ))}
+      </div>
+      <p class="stage-count" aria-hidden="true"><span data-count>01</span> / 04</p>
     </div>
   </section>
 
   <Proof lang={lang} />
 
-  <section id="about" class="section">
-    <div class="about">
-      <div class="bezel photo" data-reveal data-parallax="-40">
-        <div class="bezel-core photo-core"><span>{c.photo}</span></div>
-      </div>
-      <div class="about-text" data-parallax="30">
-        <h2 data-split>{c.aboutH}</h2>
-        <p class="lead" data-reveal>{c.aboutLead}</p>
-        <p data-reveal style="--d:100ms">{c.aboutBody}</p>
-      </div>
+  <section id="about" class="section about">
+    <div class="bezel photo" data-reveal data-depth="-30">
+      <div class="bezel-core photo-core"><span>{c.photo}</span></div>
+    </div>
+    <div class="about-text" data-depth="20">
+      <h2 data-split>{c.aboutH}</h2>
+      <p class="lead" data-reveal>{c.aboutLead}</p>
+      <p data-reveal>{c.aboutBody}</p>
+      <ol class="facts" data-reveal>
+        {stops.map((s, i) => (
+          <li><span class="fact-when">{s.when}</span><span class="fact-title">{s.title}</span><span class="fact-org">{s.org}</span></li>
+        ))}
+      </ol>
     </div>
   </section>
 
-  <!-- Toolkit: two bands that drift against each other with scroll -->
-  <section class="toolkit" aria-labelledby="toolkit-h">
-    <h2 id="toolkit-h" class="sr-only">{c.toolkitH}</h2>
-    <ul class="sr-only">{tools.map((t) => <li>{t}</li>)}</ul>
-    {bands.map((band, b) => (
-      <div class="band" data-band={b} aria-hidden="true">
-        <div class="band-track">
-          {[0, 1, 2].map(() => band.map((t) => <span class="band-item">{t}<i></i></span>))}
-        </div>
-      </div>
-    ))}
-  </section>
-
-  <section id="journey" class="section">
-    <h2 data-split>{c.journeyH}</h2>
-    <ol class="route" data-route style={`--progress:${(c.currentStop + 0.5) / c.stops.length}`} data-progress-target={(c.currentStop + 0.5) / c.stops.length}>
-      {c.stops.map((s, i) => (
-        <li class:list={['stop', { done: i <= c.currentStop, now: i === c.currentStop }]} style={`--i:${i}`} data-stop={i}>
-          <span class="stop-dot" aria-hidden="true"></span>
-          <span class="stop-when">{String(i + 1).padStart(2, '0')} · {s.when}</span>
-          <span class="stop-title">{s.title}</span>
-          <span class="stop-org">{s.org}</span>
-        </li>
-      ))}
-    </ol>
-    <div id="cv" class="bezel bezel-pill" data-reveal>
-      <div class="bezel-core cv">
-        <span>{c.cvLine}</span>
-        <a class="btn btn-primary" href={cvHref} data-magnetic>{c.ctaCv}<span class="btn-ico"><Icon name="envelope" size={16} /></span></a>
-      </div>
-    </div>
-  </section>
-
-  <section id="writing" class="section">
-    <h2 data-split>{c.writingH}</h2>
-    <ul class="posts">
-      {c.posts.map((p, i) => (
-        <li data-reveal style={`--d:${i * 80}ms`}><span class="post-tag">{c.draft}</span><span class="post-title">{p}</span></li>
-      ))}
-    </ul>
-  </section>
-
-  <section id="contact" class="contact" data-contact>
-    <canvas class="dusk" data-dusk aria-hidden="true"></canvas>
-    <div class="contact-inner">
-      <h2 class="contact-h" data-split data-contact-h>{c.contactH}</h2>
-      <p data-reveal style="--d:80ms">{c.contactSub}</p>
-      <div class="contact-actions" data-reveal style="--d:160ms">
-        <a class="btn btn-primary btn-xl" href={`mailto:${EMAIL}`} data-magnetic>{EMAIL}<span class="btn-ico"><Icon name="arrowUpRight" size={18} /></span></a>
-        <a class="text-link" href={GITHUB} rel="me"><Icon name="github" size={20} />github.com/nd32ks</a>
-      </div>
+  <section id="contact" class="section contact">
+    <h2 class="contact-h" data-split data-contact-h>{c.contactH}</h2>
+    <p data-reveal>{c.contactSub}</p>
+    <div class="contact-actions" data-reveal>
+      <a class="btn btn-primary btn-xl" href={`mailto:${EMAIL}`} data-magnetic>{EMAIL}<span class="btn-ico"><Icon name="arrowUpRight" size={18} /></span></a>
+      <a class="text-link" href={GITHUB} rel="me"><Icon name="github" size={20} />github.com/nd32ks</a>
     </div>
   </section>
 </main>
@@ -201,3 +144,10 @@ const bands = [tools.slice(0, half), tools.slice(half)];
 <footer class="footer">
   <div><span>© 2026 Theodosius Andrew Djajakusli</span><span>{c.footer}</span></div>
 </footer>
+
+<!-- Mobile action bar: contact always in thumb reach; its background fills as you read -->
+<div class="action-bar" data-action-bar>
+  <span class="action-fill" data-action-fill aria-hidden="true"></span>
+  <a class="action-primary" href={`mailto:${EMAIL}`}>{t.email}</a>
+  <a class="action-ghost" href={cvHref}>{c.ctaCv}</a>
+</div>

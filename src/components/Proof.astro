@@ -1,104 +1,68 @@
 ---
 import Icon from './Icon.astro';
 import { dict, type Lang } from '../i18n';
-import { skills, proofProjects, shippedProof, type Viz } from '../data/proof';
+import { skills, proofProjects, shippedProof } from '../data/proof';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const zh = lang === 'zh';
 const c = dict[lang];
 const today = new Date().toISOString().slice(0, 10);
-
-const status = (start: string, due: string, repo: string) => {
-  if (today < start) return 'next';
-  if (today <= due) return 'live';
-  return repo ? 'done' : 'review';
-};
+const status = (start: string, due: string, repo: string) => (today < start ? 'next' : today <= due ? 'live' : repo ? 'done' : 'review');
 const statusLabel = { live: c.statusLive, next: c.statusNext, done: c.statusDone, review: c.statusReview } as const;
 const fmt = (iso: string) => {
   const d = new Date(iso + 'T00:00:00Z');
-  return lang === 'zh'
-    ? `${d.getUTCMonth() + 1}月${d.getUTCDate()}日`
-    : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  return zh ? `${d.getUTCMonth() + 1}月${d.getUTCDate()}日` : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 };
-const skillName = Object.fromEntries(skills.map((s) => [s.id, lang === 'zh' ? s.zh : s.en]));
-
-// Small, deterministic illustrations of each kind of analysis (not results).
-let seed = 9;
-const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-const series = Array.from({ length: 40 }, (_, i) => {
-  const base = 96 + Math.sin(i / 4) * 14 + (rnd() - 0.5) * 18;
-  return [8 + i * 7.8, i === 27 ? 28 : base] as const;
-});
-const bell = (mu: number, sd: number, h: number) =>
-  Array.from({ length: 61 }, (_, i) => {
-    const x = i / 60;
-    return [10 + x * 300, 160 - h * Math.exp(-((x - mu) ** 2) / (2 * sd * sd))] as const;
-  });
-const path = (pts: readonly (readonly [number, number])[]) => pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
-const vizSvg: Record<Viz, string> = {
-  funnel: [100, 76, 54, 34, 20].map((w, i) => `<rect x="${160 - w * 1.4}" y="${22 + i * 28}" width="${w * 2.8}" height="18" rx="9" class="${i === 4 ? 'v-hot' : 'v-fill'}" />`).join(''),
-  anomaly: `<path d="${path(series)}" class="v-line" /><circle cx="${series[27][0]}" cy="28" r="7" class="v-hot" /><circle cx="${series[27][0]}" cy="28" r="15" class="v-ring" />`,
-  threshold: `<path d="${path(bell(0.33, 0.12, 120))}" class="v-line" /><path d="${path(bell(0.66, 0.13, 90))}" class="v-line v-hot-line" /><line x1="170" y1="20" x2="170" y2="166" class="v-dash" />`,
-  ab: `<line x1="40" y1="60" x2="300" y2="60" class="v-axis" /><line x1="40" y1="120" x2="300" y2="120" class="v-axis" /><line x1="90" y1="60" x2="190" y2="60" class="v-ci" /><circle cx="140" cy="60" r="8" class="v-fill" /><line x1="150" y1="120" x2="260" y2="120" class="v-ci v-hot-line" /><circle cx="205" cy="120" r="8" class="v-hot" /><text x="14" y="65" class="v-label">A</text><text x="14" y="125" class="v-label">B</text>`,
-  capstone: (() => {
-    const n = [[50, 120], [110, 56], [170, 110], [230, 44], [280, 128]];
-    return n.slice(1).map((p, i) => `<line x1="${n[i][0]}" y1="${n[i][1]}" x2="${p[0]}" y2="${p[1]}" class="v-dash" />`).join('') +
-      n.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="${i === 4 ? 10 : 6}" class="${i === 4 ? 'v-hot' : 'v-fill'}" />`).join('');
-  })(),
-};
+const skillName = Object.fromEntries(skills.map((s) => [s.id, zh ? s.zh : s.en]));
+const shape: [number, number][] = [[14, 64], [36, 32], [58, 56], [78, 22], [90, 68]];
+const h2 = zh ? '仍在成形的星座' : 'Constellations still forming';
+const sub = zh ? '在毕业项目之前，每周发布一个新项目。选择一项技能，查看哪些项目将证明它。' : 'One new build each week until the capstone. Pick a skill to see which builds will prove it.';
 ---
 <section id="proof" class="section proof" data-proof>
-  <div class="proof-grid">
-    <div class="proof-side">
-      <h2 data-split>{c.proofH}</h2>
-      <p class="proof-sub" data-reveal>{c.proofSub}</p>
-      <div class="skill-pick" role="group" aria-label={c.proofH} data-reveal>
-        <button type="button" class="skill-btn" data-skill="" aria-pressed="true">{c.proofAll}</button>
-        {skills.map((s) => <button type="button" class="skill-btn" data-skill={s.id} aria-pressed="false">{lang === 'zh' ? s.zh : s.en}</button>)}
-      </div>
-      <div class="shipped" data-reveal>
-        <p>{c.proofShipped}</p>
-        <ul>
-          {shippedProof.map((s) => <li data-skills={s.skills.join(' ')}><a href={s.href}>{s.title}</a></li>)}
-        </ul>
-      </div>
-    </div>
-
-    <ol class="passes">
-      {proofProjects.map((p, i) => {
-        const st = status(p.start, p.due, p.repo);
-        const t = p[lang];
-        return (
-          <li class="pass" data-pass data-skills={p.skills.join(' ')} data-start={p.start} data-due={p.due} data-has-repo={p.repo ? '1' : ''} style={`--i:${i}`}>
-            <article class="bezel">
-              <div class="bezel-core pass-core">
-                <div class="pass-viz" aria-hidden="true">
-                  <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet" set:html={vizSvg[p.viz]} />
-                  <span class="pass-illus">{c.illus}</span>
-                </div>
-                <div class="pass-body">
-                  <div class="pass-top">
-                    <span class="pass-n">{String(i + 1).padStart(2, '0')} · {fmt(p.start)} - {fmt(p.due)}</span>
-                    <span class={`pass-status s-${st}`} data-status
-                      data-l-live={c.statusLive} data-l-next={c.statusNext} data-l-done={c.statusDone} data-l-review={c.statusReview}>{statusLabel[st]}</span>
-                  </div>
-                  <h3>{t.title}</h3>
-                  <p>{t.desc}</p>
-                  <ul class="chips chips-sm pass-skills">
-                    {p.skills.map((s) => <li data-chip={s}>{skillName[s]}</li>)}
-                  </ul>
-                  <div class="pass-links">
-                    {p.repo
-                      ? <a class="btn btn-ghost btn-sm" href={p.repo} rel="noopener">{c.repo}<span class="btn-ico"><Icon name="github" size={14} /></span></a>
-                      : <span class="link-soon"><Icon name="github" size={16} />{c.soon}</span>}
-                    {p.writeup && <a class="text-link" href={p.writeup} rel="noopener">{c.writeup}<Icon name="arrowUpRight" size={14} /></a>}
-                  </div>
-                </div>
-              </div>
-            </article>
-          </li>
-        );
-      })}
-    </ol>
+  <div class="proof-head">
+    <h2 data-split>{h2}</h2>
+    <p data-reveal>{sub}</p>
   </div>
+  <div class="skill-pick" role="group" aria-label={c.proofH} data-reveal>
+    <button type="button" class="skill-btn" data-skill="" aria-pressed="true">{c.proofAll}</button>
+    {skills.map((s) => <button type="button" class="skill-btn" data-skill={s.id} aria-pressed="false">{zh ? s.zh : s.en}</button>)}
+  </div>
+  <p class="shipped" data-reveal>
+    <span>{c.proofShipped}</span>
+    {shippedProof.map((s) => <a href={s.href} data-skills={s.skills.join(' ')}>{s.title}</a>)}
+  </p>
+  <ol class="weeks">
+    {proofProjects.map((p, i) => {
+      const st = status(p.start, p.due, p.repo);
+      const lit = st === 'done' ? 5 : st === 'live' || st === 'review' ? 3 : 0;
+      return (
+        <li class="week" data-pass data-skills={p.skills.join(' ')} data-start={p.start} data-due={p.due} data-has-repo={p.repo ? '1' : ''} style={`--i:${i}`}>
+          <article class="bezel">
+            <div class="bezel-core week-core">
+              <div class="mini" aria-hidden="true">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                  {shape.slice(1).map((pt, j) => <line x1={shape[j][0]} y1={shape[j][1]} x2={pt[0]} y2={pt[1]} class:list={{ on: j + 1 < lit }} vector-effect="non-scaling-stroke" />)}
+                </svg>
+                {shape.map((pt, j) => <span class:list={['mini-star', { on: j < lit }]} style={`left:${pt[0]}%;top:${pt[1]}%`}></span>)}
+              </div>
+              <div class="week-top">
+                <span class="week-n">{String(i + 1).padStart(2, '0')} · {fmt(p.start)} - {fmt(p.due)}</span>
+                <span class={`pass-status s-${st}`} data-status data-l-live={c.statusLive} data-l-next={c.statusNext} data-l-done={c.statusDone} data-l-review={c.statusReview}>{statusLabel[st]}</span>
+              </div>
+              <h3>{p[lang].title}</h3>
+              <p>{p[lang].desc}</p>
+              <ul class="chips chips-sm">{p.skills.map((s) => <li data-chip={s}>{skillName[s]}</li>)}</ul>
+              <div class="week-links">
+                {p.repo
+                  ? <a class="btn btn-ghost btn-sm" href={p.repo} rel="noopener">{c.repo}<span class="btn-ico"><Icon name="github" size={14} /></span></a>
+                  : <span class="link-soon"><Icon name="github" size={16} />{c.soon}</span>}
+                {p.writeup && <a class="text-link" href={p.writeup} rel="noopener">{c.writeup}<Icon name="arrowUpRight" size={14} /></a>}
+              </div>
+            </div>
+          </article>
+        </li>
+      );
+    })}
+  </ol>
 </section>
