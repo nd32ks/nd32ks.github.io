@@ -5,3 +5,8 @@ dist/
 .env.*
 .DS_Store
 PLAN.md
+.impeccable/config.local.json
+.impeccable/review/
+.impeccable/mocks/
+.claude/skills/impeccable/scripts/bin/
+.claude/settings.local.json

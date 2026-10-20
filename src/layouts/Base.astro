@@ -1,0 +1,53 @@
+---
+import '@fontsource-variable/schibsted-grotesk/wght.css';
+import '@fontsource-variable/schibsted-grotesk/wght-italic.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '../styles/global.css';
+import { dict, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = dict[lang];
+const site = Astro.site ?? new URL('https://nd32ks.github.io');
+const enUrl = new URL('/', site).href;
+const zhUrl = new URL('/zh/', site).href;
+const canonical = lang === 'en' ? enUrl : zhUrl;
+---
+<!doctype html>
+<html lang={c.htmlLang} data-theme="dark" data-lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{c.title}</title>
+  <meta name="description" content={c.description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang="en" href={enUrl} />
+  <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
+  <link rel="alternate" hreflang="x-default" href={enUrl} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#05070C" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={c.title} />
+  <meta property="og:description" content={c.description} />
+  <meta property="og:url" content={canonical} />
+  <script is:inline>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      d.dataset.theme = t;
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', t === 'light' ? '#E9EEF3' : '#05070C');
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">{c.skip}</a>
+  <slot />
+  <script>
+    import '../scripts/site.ts';
+  </script>
+</body>
+</html>
