@@ -2,6 +2,7 @@ export type Lang = 'en' | 'zh';
 
 export const EMAIL = 'andrw.dng@gmail.com';
 export const GITHUB = 'https://github.com/nd32ks';
+export const LINKEDIN = 'https://www.linkedin.com/in/andrew-djajakusli-b85715390/';
 
 // Cluster positions on the hero night map, in % of the map box.
 // Desktop and mobile use different layouts so labels never collide.

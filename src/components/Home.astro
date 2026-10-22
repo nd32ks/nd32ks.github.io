@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Proof from './Proof.astro';
-import { dict, EMAIL, GITHUB, type Lang } from '../i18n';
+import { dict, EMAIL, GITHUB, LINKEDIN, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -162,6 +162,7 @@ const stops = c.stops.slice(0, 4);
     <div class="contact-actions" data-reveal>
       <a class="btn btn-primary btn-xl" href={`mailto:${EMAIL}`} data-magnetic>{EMAIL}<span class="btn-ico"><Icon name="arrowUpRight" size={18} /></span></a>
       <a class="text-link" href={GITHUB} rel="me"><Icon name="github" size={20} />github.com/nd32ks</a>
+      <a class="text-link" href={LINKEDIN} rel="me noopener" target="_blank"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5c0-1.2-.02-2.73-1.66-2.73-1.67 0-1.92 1.3-1.92 2.64V21h-4z"/></svg>LinkedIn</a>
     </div>
   </section>
 </main>
