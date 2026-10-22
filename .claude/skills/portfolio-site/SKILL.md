@@ -10,10 +10,7 @@ Sources of truth, in order:
 2. Design canvas "Andrew Portfolio Design": https://claude.ai/artifact/FPNS1FaNqScM4TVNGDFbti
 3. Use the `impeccable` skill for design work; its finish review and DESIGN.md step are part of done.
 
-## Stack (current: plain HTML, CSS, JS on `main`; Astro version on the `astro` branch)
-- Files live in `site/`. Edit `site/index.html` and `site/zh/index.html` together. No build step.
-- Styles `site/assets/css/styles.css`, behaviour `site/assets/js/script.js`, libraries in `site/assets/js/vendor/`.
-- Older notes below describe the Astro version; the visual design, tokens and rules still apply.
+## Stack
 - Astro static output, content collections `src/content/{projects,blog}`, i18n routes `/` (en) and `/zh/` (简体中文).
 - Plain CSS custom properties in `src/styles/tokens.css`; no Tailwind or UI kit.
 - Fonts self-hosted: Schibsted Grotesk (display and body), JetBrains Mono (coordinates, labels, tech tags), Noto Sans SC (Chinese).
