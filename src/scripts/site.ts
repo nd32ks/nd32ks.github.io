@@ -264,9 +264,9 @@ if (finePointer.matches && !reduceMotion.matches) {
 /* ---------- Depth that carries meaning ---------- */
 const mm = gsap.matchMedia();
 mm.add('(prefers-reduced-motion: no-preference)', () => {
-  const copy = document.querySelector('[data-hero-copy]');
+  const copy = document.querySelectorAll('[data-hero-copy]');
   // The hero lifts away faster than the stars behind it: you are leaving the surface.
-  if (copy) gsap.to(copy, { y: -160, opacity: 0, ease: 'none', scrollTrigger: { trigger: '[data-hero]', start: 'top top', end: 'bottom 20%', scrub: true } });
+  if (copy.length) gsap.fromTo(copy, { y: 0, opacity: 1 }, { y: -160, opacity: 0, ease: 'none', immediateRender: false, scrollTrigger: { trigger: '[data-hero]', start: 'top top', end: 'bottom 20%', scrub: true } });
   document.querySelectorAll<HTMLElement>('[data-depth]').forEach((el) => {
     const v = Number(el.dataset.depth) || 0;
     gsap.fromTo(el, { y: -v }, { y: v, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });

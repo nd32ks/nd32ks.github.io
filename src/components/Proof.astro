@@ -16,8 +16,8 @@ const fmt = (iso: string) => {
 };
 const skillName = Object.fromEntries(skills.map((s) => [s.id, zh ? s.zh : s.en]));
 const shape: [number, number][] = [[14, 64], [36, 32], [58, 56], [78, 22], [90, 68]];
-const h2 = zh ? '仍在成形的星座' : 'Constellations still forming';
-const sub = zh ? '在毕业项目之前，每周发布一个新项目。选择一项技能，查看哪些项目将证明它。' : 'One new build each week until the capstone. Pick a skill to see which builds will prove it.';
+const h2 = zh ? '每周项目计划' : 'Weekly project schedule';
+const sub = zh ? '在毕业项目之前，每周完成一个项目。选择一项技能，查看哪些项目会用到它。' : 'One project is due each week until the capstone. Select a skill to see which projects use it.';
 ---
 <section id="proof" class="section proof" data-proof>
   <div class="proof-head">
