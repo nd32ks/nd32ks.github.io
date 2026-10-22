@@ -74,7 +74,7 @@ document.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
 const revealIo = new IntersectionObserver((entries) => {
   entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); revealIo.unobserve(en.target); } });
 }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-document.querySelectorAll('[data-reveal], [data-split], .week').forEach((el) => revealIo.observe(el));
+document.querySelectorAll('[data-reveal], [data-split], .project').forEach((el) => revealIo.observe(el));
 const hero = document.querySelector('[data-hero]');
 const ready = () => hero?.classList.add('ready');
 document.fonts?.ready.then(ready);
@@ -189,6 +189,8 @@ if (stageWrap) {
 
 /* ---------- In-page links ---------- */
 document.addEventListener('click', (e) => {
+  const ph = (e.target as Element).closest('a[aria-disabled="true"]');
+  if (ph) { e.preventDefault(); return; }
   const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
   if (!a || a.dataset.jump) return;
   const hash = a.getAttribute('href') ?? '';

@@ -63,8 +63,8 @@ export const proofProjects: ProofProject[] = [
   },
   {
     id: 'p5', viz: 'capstone', start: '2026-11-16', due: '2026-11-22',
-    en: { title: 'Capstone draft', desc: 'An end-to-end project that brings the previous four together: data, modelling, experiment and a clear story.' },
-    zh: { title: '毕业项目初稿', desc: '把前四个项目串联起来的端到端项目：数据、建模、实验与清晰的叙述。' },
+    en: { title: 'Capstone project', desc: 'An end-to-end project that brings the previous four together: data, modelling, experiment and a clear story.' },
+    zh: { title: '毕业项目', desc: '把前四个项目串联起来的端到端项目：数据、建模、实验与清晰的叙述。' },
     skills: ['sql', 'anomaly', 'classify', 'experiment', 'stats', 'writing'], repo: '', writeup: '',
   },
 ];

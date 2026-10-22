@@ -294,3 +294,49 @@ main, .footer { position: relative; z-index: 1; }
 @media (prefers-reduced-transparency: reduce) {
   .nav, .action-bar { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--core); }
 }
+
+/* Data science projects */
+.projects { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+.project { grid-column: span 2; transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
+.project.wide { grid-column: span 3; }
+.project .bezel { height: 100%; }
+.project-core { display: flex; flex-direction: column; }
+.project-viz { position: relative; display: flex; align-items: center; justify-content: center; padding: 28px 24px; min-height: 190px; border-bottom: 1px solid var(--hair); background: color-mix(in srgb, var(--bg) 70%, transparent); }
+.project.wide .project-viz { min-height: 230px; }
+.project-viz svg { width: 100%; max-width: 360px; height: auto; overflow: visible; }
+.project-n { position: absolute; left: 20px; top: 16px; font: 12px var(--mono); color: var(--faint); }
+.project-body { padding: 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.project h3 { font-size: clamp(20px, 1.7vw, 26px); line-height: 1.15; letter-spacing: -0.025em; font-weight: 800; }
+.project-body > p { color: var(--muted); font-size: 15px; line-height: 1.55; }
+.project .chips { margin-top: auto; padding-top: 4px; }
+.project-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn.placeholder { border-style: dashed; border-color: var(--hair-strong); color: var(--faint); cursor: not-allowed; }
+.btn.placeholder .btn-ico { background: transparent; }
+.btn.placeholder:hover .btn-ico { transform: none; }
+.project.dim { opacity: 0.25; transform: scale(0.985); }
+.v-fill { fill: var(--accent); opacity: 0.45; }
+.v-hot { fill: var(--accent-core); }
+:root[data-theme='dark'] .v-hot { filter: drop-shadow(0 0 6px rgba(255, 178, 91, 0.7)); }
+.v-line { fill: none; stroke: var(--accent); stroke-width: 2; opacity: 0.6; stroke-linejoin: round; }
+.v-hot-line { stroke: var(--accent-core); opacity: 1; }
+.v-ring { fill: none; stroke: var(--accent-core); stroke-width: 1; opacity: 0.6; }
+.v-dash { stroke: var(--hair-strong); stroke-width: 1.5; stroke-dasharray: 4 5; }
+.v-axis { stroke: var(--hair); stroke-width: 1; }
+.v-ci { stroke: var(--accent); stroke-width: 4; stroke-linecap: round; opacity: 0.55; }
+.v-ci.v-hot-line { stroke: var(--accent-core); opacity: 1; }
+.v-label { font: 500 14px var(--mono); fill: var(--faint); }
+.js .project { opacity: 0; transform: translateY(32px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); transition-delay: calc(var(--i) * 70ms); }
+.js .project.in { opacity: 1; transform: none; }
+.js .project.in.dim { opacity: 0.25; transform: scale(0.985); transition-delay: 0ms; }
+@media (max-width: 1100px) {
+  .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project, .project.wide { grid-column: span 1; }
+  .project:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) {
+  .projects { grid-template-columns: minmax(0, 1fr); }
+  .project:last-child { grid-column: auto; }
+  .project-viz, .project.wide .project-viz { min-height: 160px; }
+  .project-body { padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { .js .project { opacity: 1; transform: none; } }
