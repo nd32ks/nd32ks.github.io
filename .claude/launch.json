@@ -1,6 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "astro-dev", "runtimeExecutable": "npx", "runtimeArgs": ["astro", "dev", "--port", "4321"], "port": 4321 }
+    { "name": "site", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "4321", "--directory", "site"], "port": 4321 }
   ]
 }
