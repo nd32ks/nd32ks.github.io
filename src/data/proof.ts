@@ -32,6 +32,7 @@ export type ProofProject = {
   en: { title: string; desc: string };
   zh: { title: string; desc: string };
   skills: SkillId[];
+  image?: { src: string; alt: { en: string; zh: string } }; // screenshot shown instead of the diagram
   repo: string; // GitHub URL, '' until published
   writeup: string; // write-up URL, '' until published
 };
@@ -39,9 +40,10 @@ export type ProofProject = {
 export const proofProjects: ProofProject[] = [
   {
     id: 'p1', viz: 'funnel', start: '2026-10-16', due: '2026-10-25',
-    en: { title: 'SQL and B2B funnel dashboard', desc: 'SQL models of a B2B sales funnel, from lead to closed deal, with a dashboard that shows where accounts drop off.' },
-    zh: { title: 'SQL 与 B2B 销售漏斗看板', desc: '用 SQL 建模 B2B 销售漏斗，从线索到成交，并以看板呈现客户在哪一步流失。' },
-    skills: ['sql', 'funnel', 'dash', 'writing'], repo: '', writeup: '',
+    en: { title: 'SQL and B2B funnel dashboard', desc: 'SQL models (DuckDB) of a synthetic B2B SaaS funnel: 600 leads, 380 deals, 166 won customers, 82 churned. The dashboard shows conversion and churn by segment.' },
+    zh: { title: 'SQL 与 B2B 销售漏斗看板', desc: '用 SQL（DuckDB）为合成的 B2B SaaS 漏斗建模：600 条线索、380 个商机、166 个成交客户、82 个流失客户。看板按客户规模展示转化率和流失率。' },
+    skills: ['sql', 'funnel', 'dash', 'writing'], image: { src: '/projects/b2b-funnel.webp', alt: { en: 'Dashboard screenshot: B2B funnel by segment, conversion rates, churn by segment and active customers per month', zh: '看板截图：按客户规模划分的 B2B 漏斗、转化率、流失率和每月活跃客户' } },
+    repo: 'https://github.com/nd32ks/b2b-funnel-analytics', writeup: '',
   },
   {
     id: 'p2', viz: 'anomaly', start: '2026-10-26', due: '2026-11-01',

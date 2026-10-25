@@ -340,3 +340,7 @@ main, .footer { position: relative; z-index: 1; }
   .project-body { padding: 20px; }
 }
 @media (prefers-reduced-motion: reduce) { .js .project { opacity: 1; transform: none; } }
+
+.project-viz.has-image { padding: 0; min-height: 0; background: var(--map-bg, #04050a); }
+.project-viz.has-image img { display: block; width: 100%; height: auto; }
+.project-viz.has-image .project-n { background: color-mix(in srgb, var(--bg) 75%, transparent); padding: 2px 8px; border-radius: 999px; left: 14px; top: 12px; }
