@@ -1399,6 +1399,61 @@ main,
   }
 }
 
-.project-viz.has-image { padding: 0; min-height: 0; background: var(--map-bg, #04050a); }
-.project-viz.has-image img { display: block; width: 100%; height: auto; }
-.project-viz.has-image .project-n { background: color-mix(in srgb, var(--bg) 75%, transparent); padding: 2px 8px; border-radius: 999px; left: 14px; top: 12px; }
+.project-viz.has-image {
+  padding: 0;
+  min-height: 0;
+  background: var(--map-bg, #04050a);
+}
+.project-viz.has-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.project-viz.has-image .project-n {
+  background: color-mix(in srgb, var(--bg) 75%, transparent);
+  padding: 2px 8px;
+  border-radius: 999px;
+  left: 14px;
+  top: 12px;
+}
+
+/* Hairline figures */
+.hl {
+  --hairline-plate: var(--core);
+  --hairline-hi: var(--accent);
+  --hairline-edge: var(--muted);
+  --hairline-mid: var(--faint);
+  --hairline-lo: var(--hair-strong);
+  --hairline-stroke: 0.9;
+  width: 100%;
+}
+.project-viz.has-figure {
+  background: var(--core);
+  padding: 12px 16px 0;
+  min-height: 0;
+}
+.project-viz.has-figure .hl {
+  width: min(100%, 300px);
+  margin: 0 auto;
+}
+.project.wide .project-viz.has-figure .hl {
+  width: min(100%, 330px);
+}
+.project-viz.has-figure .project-n {
+  z-index: 1;
+}
+.contact {
+  position: relative;
+}
+.hl-plug {
+  position: absolute;
+  right: var(--pad-x);
+  bottom: 40px;
+  width: min(380px, 34vw);
+  --hairline-plate: var(--bg);
+}
+@media (max-width: 1100px) {
+  .hl-plug {
+    display: none;
+  }
+}

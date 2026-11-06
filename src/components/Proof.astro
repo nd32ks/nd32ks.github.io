@@ -46,7 +46,12 @@ const viz: Record<Viz, string> = {
       <li class:list={['project', { wide: i < 2 }]} data-pass data-skills={p.skills.join(' ')} style={`--i:${i}`}>
         <article class="bezel">
           <div class="bezel-core project-core">
-            {p.image ? (
+            {p.figure ? (
+              <div class="project-viz has-figure">
+                <div class="hl" data-hairline={p.figure.kind} data-label={p.figure.label[lang]}></div>
+                <span class="project-n">{String(i + 1).padStart(2, '0')}</span>
+              </div>
+            ) : p.image ? (
               <div class="project-viz has-image">
                 <img src={p.image.src} alt={p.image.alt[lang]} width="2000" height="1009" loading="lazy" decoding="async" />
                 <span class="project-n">{String(i + 1).padStart(2, '0')}</span>

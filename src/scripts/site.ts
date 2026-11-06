@@ -1,4 +1,5 @@
 import Lenis from 'lenis';
+import { plot, sieve, riffle, relay, plug } from '@lucasmarkes/hairline';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -243,6 +244,13 @@ weeks.forEach((w) => {
   const lit = st === 'done' ? 5 : st === 'next' ? 0 : 3;
   w.querySelectorAll('.mini-star').forEach((s, i) => s.classList.toggle('on', i < lit));
   w.querySelectorAll('.mini line').forEach((s, i) => s.classList.toggle('on', i + 1 < lit));
+});
+
+/* ---------- Hairline figures: each answers the pointer and carries a real label ---------- */
+const figures = { plot, sieve, riffle, relay, plug } as const;
+document.querySelectorAll<HTMLElement>('[data-hairline]').forEach((el) => {
+  const make = figures[el.dataset.hairline as keyof typeof figures];
+  if (make) make(el, { intensity: 0.6, label: el.dataset.label });
 });
 
 /* ---------- Mobile action bar fills with reading progress ---------- */
