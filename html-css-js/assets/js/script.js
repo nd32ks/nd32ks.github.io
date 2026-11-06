@@ -1,4 +1,4 @@
-/* Site behaviour. Needs gsap, ScrollTrigger and Lenis (loaded before this file from ./vendor). */
+/* Site behaviour. Needs gsap, ScrollTrigger and Lenis, loaded before this file from ./vendor. */
 (() => {
   "use strict";
   const { gsap, ScrollTrigger, Lenis } = window;
@@ -368,6 +368,53 @@
       s.classList.toggle("on", i + 1 < lit),
     );
   });
+  const typedEl = document.querySelector("[data-typed]");
+  if (typedEl && !reduceMotion.matches) {
+    const words = JSON.parse(typedEl.dataset.typed ?? "[]");
+    let w = 0,
+      ch = words[0]?.length ?? 0,
+      deleting = true;
+    const step = () => {
+      const word = words[w];
+      if (deleting) {
+        ch -= 1;
+        if (ch <= 0) {
+          deleting = false;
+          w = (w + 1) % words.length;
+        }
+      } else {
+        ch += 1;
+        if (ch >= words[w].length) {
+          deleting = true;
+          typedEl.textContent = words[w];
+          window.setTimeout(step, 1900);
+          return;
+        }
+      }
+      typedEl.textContent = (deleting ? word : words[w]).slice(
+        0,
+        Math.max(0, ch),
+      );
+      window.setTimeout(step, deleting ? 32 : 58);
+    };
+    window.setTimeout(step, 2400);
+  }
+  document.querySelectorAll("[data-countup]").forEach((el) => {
+    const n = Number(el.dataset.countup) || 0;
+    const suffix = el.dataset.suffix ?? "";
+    if (reduceMotion.matches || n < 10) return;
+    const obj = { v: 0 };
+    el.textContent = "0" + suffix;
+    gsap.to(obj, {
+      v: n,
+      duration: 1.8,
+      delay: 0.6,
+      ease: "power3.out",
+      onUpdate: () => {
+        el.textContent = Math.round(obj.v).toLocaleString("en-US") + suffix;
+      },
+    });
+  });
   const fill = document.querySelector("[data-action-fill]");
   if (fill)
     ScrollTrigger.create({
@@ -395,6 +442,24 @@
   const mm = gsap.matchMedia();
   mm.add("(prefers-reduced-motion: no-preference)", () => {
     const copy = document.querySelectorAll("[data-hero-copy]");
+    const side = document.querySelector("[data-hero-side]");
+    if (side)
+      gsap.fromTo(
+        side,
+        { y: 0, opacity: 1 },
+        {
+          y: -70,
+          opacity: 0,
+          ease: "none",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: "[data-hero]",
+            start: "top top",
+            end: "bottom 10%",
+            scrub: true,
+          },
+        },
+      );
     if (copy.length)
       gsap.fromTo(
         copy,

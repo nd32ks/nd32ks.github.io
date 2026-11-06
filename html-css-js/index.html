@@ -112,6 +112,18 @@
       <section id="top" class="hero" data-hero>
         <div class="hero-copy" data-hero-copy>
           <h1 class="rise"><span>Andrew</span><em>Djajakusli</em></h1>
+          <p class="typed rise">
+            <span class="typed-k">I work with</span
+            ><span class="sr-only"
+              >SQL and DuckDB, LLM extraction pipelines, PDF parsing, demand
+              forecasting, Next.js and Firebase, robotics scripting</span
+            ><span
+              class="typed-v"
+              aria-hidden="true"
+              data-typed='["SQL and DuckDB","LLM extraction pipelines","PDF parsing","demand forecasting","Next.js and Firebase","robotics scripting"]'
+              >SQL and DuckDB</span
+            ><span class="caret" aria-hidden="true"></span>
+          </p>
           <p class="pitch rise">
             Data Science and AI student at XJTLU in Suzhou. Robotics intern at
             Bodiac Robotics. Winner of the XJTLU School of AI and Data Science
@@ -154,50 +166,39 @@
             ></a>
           </div>
         </div>
-        <div class="glance-wrap" data-hero-copy>
-          <aside class="glance bezel rise" aria-label="At a glance">
-            <div class="bezel-core glance-core">
-              <dl>
-                <div>
-                  <dt>Studying</dt>
-                  <dd>BEng Data Science and AI, XJTLU, 2025 - 2028</dd>
-                </div>
-                <div>
-                  <dt>Working</dt>
-                  <dd>
-                    Robotics Intern, Bodiac Robotics (Suzhou), Mar 2026 -
-                    present
-                  </dd>
-                </div>
-                <div>
-                  <dt>Awarded</dt>
-                  <dd>
-                    Winner, XJTLU School of AI and Data Science Hackathon
-                    (ProfessorBook)
-                  </dd>
-                </div>
-                <div>
-                  <dt>Contributing</dt>
-                  <dd>Mathleagues: past-paper question extraction system</dd>
-                </div>
-              </dl>
-              <a class="text-link" href="#proof"
-                >View weekly project schedule<span class="icon"
-                  ><svg
-                    width="14"
-                    height="14"
-                    aria-hidden="true"
-                    focusable="false"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 256 256"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M204.24,148.24l-72,72a6,6,0,0,1-8.48,0l-72-72a6,6,0,0,1,8.48-8.48L122,201.51V40a6,6,0,0,1,12,0V201.51l61.76-61.75a6,6,0,0,1,8.48,8.48Z"
-                    /></svg></span
-              ></a>
-            </div>
-          </aside>
+        <div class="hero-side" data-hero-side>
+          <div class="term-wrap rise">
+            <div
+              class="hl hl-term"
+              data-hairline="terminal"
+              data-play
+              data-read="term"
+              data-label="Interactive figure: a terminal window. The pointer height scrolls back through its history and lifts the line under it."
+            ></div>
+            <p class="term-read" aria-hidden="true">
+              <span>~/andrew</span><span data-read-out="term"></span>
+            </p>
+          </div>
+          <ul class="stats rise">
+            <li>
+              <a href="#p-fn"
+                ><strong data-countup="15000" data-suffix="+">15,000+</strong
+                ><span>records behind the FreshNext forecasts</span></a
+              >
+            </li>
+            <li>
+              <a href="#p-ml"
+                ><strong data-countup="14" data-suffix>14</strong
+                ><span>A-level papers extracted for Mathleagues</span></a
+              >
+            </li>
+            <li>
+              <a href="#p-pb"
+                ><strong data-countup="1" data-suffix="st">1st</strong
+                ><span>place, XJTLU AI and Data Science Hackathon</span></a
+              >
+            </li>
+          </ul>
         </div>
       </section>
       <!-- Project stage: pinned while each project is shown in turn -->
@@ -879,14 +880,13 @@
               <div class="bezel-core project-core">
                 <div class="project-viz has-image">
                   <img
-                    src="/assets/img/b2b-funnel.webp"
+                    src="/projects/b2b-funnel.webp"
                     alt="Dashboard screenshot: B2B funnel by segment, conversion rates, churn by segment and active customers per month"
                     width="2000"
                     height="1009"
                     loading="lazy"
                     decoding="async"
-                  />
-                  <span class="project-n">01</span>
+                  /><span class="project-n">01</span>
                 </div>
                 <div class="project-body">
                   <h3>SQL and B2B funnel dashboard</h3>

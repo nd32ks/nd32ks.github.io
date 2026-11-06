@@ -124,7 +124,7 @@ main, .footer { position: relative; z-index: 1; }
 .bezel-core { height: 100%; border-radius: 24px; background: var(--core); box-shadow: inset 0 1px 0 var(--inner-hi); overflow: hidden; }
 
 /* Hero */
-.hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; padding: 0 var(--pad-x) clamp(72px, 13vh, 140px); }
+.hero { position: relative; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, clamp(380px, 40vw, 620px)); align-items: end; gap: clamp(32px, 4vw, 72px); padding: 112px var(--pad-x) clamp(64px, 11vh, 120px); max-width: 1600px; margin: 0 auto; }
 .glance { width: min(440px, 100%); flex: none; }
 .glance-core { padding: 8px 24px 20px; display: flex; flex-direction: column; gap: 8px; }
 .glance dl { margin: 0; }
@@ -251,7 +251,7 @@ main, .footer { position: relative; z-index: 1; }
 }
 @media (max-width: 767px) {
   .nav-wrap { padding-top: 12px; }
-  .hero { flex-direction: column; align-items: stretch; justify-content: flex-end; gap: 36px; padding-top: 120px; padding-bottom: 140px; }
+  .hero { gap: 28px; padding-top: 120px; padding-bottom: 140px; }
   .hero-copy { gap: 22px; }
   /* Stage stacks: progress segments, constellation, then the panel */
   .stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto 1fr; padding: 92px 20px 100px; }
@@ -354,3 +354,39 @@ main, .footer { position: relative; z-index: 1; }
 .contact { position: relative; }
 .hl-plug { position: absolute; right: var(--pad-x); bottom: 40px; width: min(380px, 34vw); --hairline-plate: var(--bg); }
 @media (max-width: 1100px) { .hl-plug { display: none; } }
+
+/* Hero: typing line, terminal figure and real numbers */
+.typed { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font: 500 clamp(15px, 1.25vw, 18px)/1.4 var(--mono); min-height: 1.4em; }
+.typed-k { color: var(--faint); }
+.typed-v { color: var(--ink); }
+.caret { display: inline-block; width: 0.55em; height: 1.1em; margin-left: -6px; background: var(--accent); transform: translateY(0.18em); animation: caret 1.05s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+.hero-side { display: flex; flex-direction: column; gap: 20px; align-self: center; padding-top: 24px; will-change: transform, opacity; }
+.term-wrap { position: relative; }
+.hl-term > svg { transform: scale(1.22); transform-origin: 50% 46%; }
+.hl-term { width: 100%; max-height: calc(100svh - 360px); aspect-ratio: 5 / 4; margin-inline: auto; --hairline-plate: var(--bg); --hairline-stroke: 1; }
+@supports (width: 1cqh) { .hl-term { max-width: calc((100svh - 360px) * 1.25); } }
+.term-read { position: absolute; left: 6%; bottom: 4%; display: flex; gap: 10px; font: 12px var(--mono); color: var(--faint); pointer-events: none; }
+.term-read [data-read-out] { color: var(--accent); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--hair); }
+.stats li + li { border-left: 1px solid var(--hair); }
+.stats a { display: flex; flex-direction: column; gap: 6px; padding: 16px 16px 4px; text-decoration: none; height: 100%; transition: background-color 0.4s var(--ease); border-radius: 0 0 14px 14px; }
+.stats li:first-child a { padding-left: 0; }
+.stats a:hover { background: var(--well); }
+.stats strong { font-size: clamp(28px, 2.6vw, 40px); line-height: 1; letter-spacing: -0.035em; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--ink); }
+.stats a:hover strong { color: var(--accent); }
+.stats span { font-size: 13px; line-height: 1.4; color: var(--muted); }
+.js .hero-side .rise:nth-child(1) { transition-delay: 0.3s; }
+.js .hero-side .rise:nth-child(2) { transition-delay: 0.45s; }
+@media (max-width: 1100px) {
+  .hero { grid-template-columns: minmax(0, 1fr); align-items: end; }
+  .hero-side { align-self: stretch; padding-top: 0; }
+  .term-wrap { display: none; }
+}
+@media (max-width: 767px) {
+  .stats a { padding: 14px 10px 4px; }
+  .stats span { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

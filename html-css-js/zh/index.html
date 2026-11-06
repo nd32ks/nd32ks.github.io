@@ -112,6 +112,18 @@
       <section id="top" class="hero" data-hero>
         <div class="hero-copy" data-hero-copy>
           <h1 class="rise"><span>李建安</span><em>Andrew Djajakusli</em></h1>
+          <p class="typed rise">
+            <span class="typed-k">我常用的</span
+            ><span class="sr-only"
+              >SQL 与 DuckDB, LLM 数据抽取管道, PDF 解析, 需求预测, Next.js 与
+              Firebase, 机器人脚本</span
+            ><span
+              class="typed-v"
+              aria-hidden="true"
+              data-typed='["SQL 与 DuckDB","LLM 数据抽取管道","PDF 解析","需求预测","Next.js 与 Firebase","机器人脚本"]'
+              >SQL 与 DuckDB</span
+            ><span class="caret" aria-hidden="true"></span>
+          </p>
           <p class="pitch rise">
             西交利物浦大学数据科学与人工智能专业学生，现任 Bodiac Robotics
             机器人实习生，西浦人工智能与数据科学学院黑客松冠军。
@@ -153,50 +165,39 @@
             ></a>
           </div>
         </div>
-        <div class="glance-wrap" data-hero-copy>
-          <aside class="glance bezel rise" aria-label="概览">
-            <div class="bezel-core glance-core">
-              <dl>
-                <div>
-                  <dt>就读</dt>
-                  <dd>
-                    数据科学与人工智能 工学学士，西交利物浦大学，2025 - 2028
-                  </dd>
-                </div>
-                <div>
-                  <dt>任职</dt>
-                  <dd>
-                    机器人实习生，Bodiac Robotics（苏州），2026 年 3 月至今
-                  </dd>
-                </div>
-                <div>
-                  <dt>获奖</dt>
-                  <dd>
-                    西浦人工智能与数据科学学院黑客松 冠军（ProfessorBook）
-                  </dd>
-                </div>
-                <div>
-                  <dt>贡献</dt>
-                  <dd>Mathleagues：往年试卷题目抽取系统</dd>
-                </div>
-              </dl>
-              <a class="text-link" href="#proof"
-                >查看每周项目计划<span class="icon"
-                  ><svg
-                    width="14"
-                    height="14"
-                    aria-hidden="true"
-                    focusable="false"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 256 256"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M204.24,148.24l-72,72a6,6,0,0,1-8.48,0l-72-72a6,6,0,0,1,8.48-8.48L122,201.51V40a6,6,0,0,1,12,0V201.51l61.76-61.75a6,6,0,0,1,8.48,8.48Z"
-                    /></svg></span
-              ></a>
-            </div>
-          </aside>
+        <div class="hero-side" data-hero-side>
+          <div class="term-wrap rise">
+            <div
+              class="hl hl-term"
+              data-hairline="terminal"
+              data-play
+              data-read="term"
+              data-label="互动图：一个终端窗口，指针的高度会回滚历史记录，指针所在的那一行会抬起。"
+            ></div>
+            <p class="term-read" aria-hidden="true">
+              <span>~/andrew</span><span data-read-out="term"></span>
+            </p>
+          </div>
+          <ul class="stats rise">
+            <li>
+              <a href="#p-fn"
+                ><strong data-countup="15000" data-suffix="+">15,000+</strong
+                ><span>条历史记录用于 FreshNext 预测</span></a
+              >
+            </li>
+            <li>
+              <a href="#p-ml"
+                ><strong data-countup="14" data-suffix>14</strong
+                ><span>套 A-level 试卷由 Mathleagues 系统抽取</span></a
+              >
+            </li>
+            <li>
+              <a href="#p-pb"
+                ><strong data-countup="1" data-suffix>1</strong
+                ><span>西浦 AI 与数据科学黑客松冠军</span></a
+              >
+            </li>
+          </ul>
         </div>
       </section>
       <!-- Project stage: pinned while each project is shown in turn -->
@@ -869,14 +870,13 @@
               <div class="bezel-core project-core">
                 <div class="project-viz has-image">
                   <img
-                    src="/assets/img/b2b-funnel.webp"
+                    src="/projects/b2b-funnel.webp"
                     alt="看板截图：按客户规模划分的 B2B 漏斗、转化率、流失率和每月活跃客户"
                     width="2000"
                     height="1009"
                     loading="lazy"
                     decoding="async"
-                  />
-                  <span class="project-n">01</span>
+                  /><span class="project-n">01</span>
                 </div>
                 <div class="project-body">
                   <h3>SQL 与 B2B 销售漏斗看板</h3>
